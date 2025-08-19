@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Exploration Sprint - Demo Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            width: 90vw;
+            max-width: 1200px;
+            height: 85vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        .slide-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .slide h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .slide h2 {
+            color: #34495e;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 8px;
+        }
+
+        .slide h3 {
+            color: #2980b9;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            margin-top: 20px;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .slide ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .slide li {
+            margin-bottom: 8px;
+        }
+
+        .app-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 20px 0;
+        }
+
+        .app-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            border-left: 5px solid #3498db;
+        }
+
+        .app-image {
+            width: 100%;
+            height: 200px;
+            background: #e9ecef;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            border: 2px dashed #6c757d;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .metric-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .anniversary-slide {
+            background: linear-gradient(135deg, #5396cd 0%, #38668b 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .anniversary-slide h1 {
+            color: white;
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+        }
+
+        .anniversary-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+            font-size: 1.8rem;
+        }
+
+        .star {
+            color: #f39c12;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .tech-badge {
+            background: #3498db;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+                width: 95vw;
+                height: 90vh;
+            }
+            
+            .slide h1 {
+                font-size: 1.8rem;
+            }
+            
+            .slide h2 {
+                font-size: 1.5rem;
+            }
+            
+            .slide h3 {
+                font-size: 1.2rem;
+            }
+            
+            .slide p, .slide li {
+                font-size: 1rem;
+            }
+            
+            .app-showcase {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .app-image {
+                height: 150px;
+            }
+            
+            .metric-number {
+                font-size: 1.5rem;
+            }
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        .logo {
+            position: fixed;     /* Keeps it stuck even when scrolling */
+            top: 0;
+            left: 0;
+            z-index: 1000;       /* Ensures it stays above other elements */
+        }
+        body.white-bg {
+        background: whitesmoke !important;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="logo">
+    <img src="https://www.bigrattle.com/img/Big-Rattle-Logo.jpg" height="5%" width="10%">
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Title Slide -->
+        <div class="slide active">
+            <div class="slide-content">
+                <div style="text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                    <h1 style="font-size: 3rem; margin-bottom: 30px;">AI Exploration Sprint</h1>
+                    <h2 style="border: none; color: #7f8c8d; font-size: 1.6rem; margin-bottom: 40px;">Automating Workflows with Gemini Build</h2>
+                    <div style="background: #f8f9fa; padding: 30px; border-radius: 20px; margin: 30px 0;">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px;">Two Innovative Applications</h3>
+                        <p style="font-size: 1.3rem; color: #34495e;">PO Data Extractor & Promo Price Verifier</p>
+                    </div>
+                    <p style="font-size: 1.1rem; color: #7f8c8d; margin-top: 30px;">Presented by: Siddhesh Rumade | Date: August 14, 2025</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Overview -->
+        <div class="slide">
+            <h1>Sprint Overview</h1>
+            <div class="slide-content">
+                <div style="margin: 20px 0;">
+                    <h3>🎯 Objective</h3>
+                    <p>Explore AI tools to enhance productivity and automate manual workflows in our daily operations.</p>
+                    
+                    <h3>🔧 Tool Selected</h3>
+                    <p><strong>Gemini Build</strong> - Google's AI-powered application development platform</p>
+                    
+                    <h3>📋 Applications Developed</h3>
+                    <ul>
+                        <li><strong>PO Data Extractor</strong> - Automated PDF processing for purchase orders</li>
+                        <li><strong>Promo Price Verifier</strong> - Rule-based validation for promo detection data</li>
+                    </ul>
+                    
+                    <h3>💡 Key Benefits</h3>
+                    <ul>
+                        <li>Eliminated manual data extraction processes</li>
+                        <li>Reduced error analysis time significantly</li>
+                        <li>Improved data accuracy and consistency</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Application 1 - PO Data Extractor -->
+        <div class="slide">
+            <h1>Application 1: PO Data Extractor</h1>
+            <div class="slide-content">
+                <div class="app-showcase">
+                    <div>
+                        <h3>📄 Problem Statement</h3>
+                        <p>Manual processing of bulk PDF purchase orders was time-consuming and error-prone:</p>
+                        <ul>
+                            <li>Creating folders for each request ID</li>
+                            <li>Running Python scripts individually</li>
+                            <li>Consolidating data using JSON processing</li>
+                            <li>Manual data formatting for clients</li>
+                        </ul>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-badge">React.js</span>
+                            <span class="tech-badge">Gemini Build</span>
+                            <span class="tech-badge">PDF Processing</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="app-image">
+                            <div style="text-align: center; color: #6c757d;">
+                                <p style="font-size: 1rem; margin-bottom: 8px;">📱 PO Data Extractor Interface</p>
+                            </div>
+                        </div>
+                        
+                        <h3>✅ Solution Benefits</h3>
+                        <ul>
+                            <li>Automated PDF data extraction</li>
+                            <li>Bulk processing capability</li>
+                            <li>Standardized output format</li>
+                            <li>Direct client-ready exports</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Application 2 - Promo Price Verifier -->
+        <div class="slide">
+            <h1>Application 2: Promo Price Verifier</h1>
+            <div class="slide-content">
+                <div class="app-showcase">
+                    <div>
+                        <h3>🔍 Problem Statement</h3>
+                        <p>Analyzing promo detection errors was inefficient:</p>
+                        <ul>
+                            <li>Slow image gallery review process</li>
+                            <li>Manual validation of pricing rules</li>
+                            <li>Difficulty focusing on error patterns</li>
+                            <li>Time-consuming error analysis</li>
+                        </ul>
+                        
+                        <h3>📏 Built-in Rules</h3>
+                        <ul>
+                            <li>MRP = Offer Price + Discount</li>
+                            <li>Discount ≤ Offer Price</li>
+                            <li>Offer Price ≤ MRP</li>
+                        </ul>
+                        
+                        <div class="tech-stack">
+                            <span class="tech-badge">React.js</span>
+                            <span class="tech-badge">CSV Processing</span>
+                            <span class="tech-badge">Rule Engine</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="app-image">
+                            <div style="text-align: center; color: #6c757d;">
+                                <p style="font-size: 1rem; margin-bottom: 8px;">📊 Promo Price Verifier Dashboard</p>
+                            </div>
+                        </div>
+                        
+                        <h3>✅ Solution Benefits</h3>
+                        <ul>
+                            <li>Instant rule-based validation</li>
+                            <li>Update custom validation</li>
+                            <li>Filtered error-only view</li>
+                            <li>Improved QA efficiency</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Results & Impact -->
+        <div class="slide">
+            <h1>Results & Impact</h1>
+            <div class="slide-content">
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-number">80%</div>
+                        <p>Time Reduction in PO Processing</p>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">90%</div>
+                        <p>Faster Error Detection</p>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-number">95%</div>
+                        <p>Automation of Manual Tasks</p>
+                    </div>
+                </div>
+                
+                <h2>Before vs After Comparison</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+                    <div class="app-card">
+                        <h3 style="color: #e74c3c;">❌ Before (Manual Process)</h3>
+                        <h4>PO Data Extractor</h4>
+                        <ul>
+                            <li>Manual folder creation and organization</li>
+                            <li>Multiple script executions</li>
+                        </ul>
+                        <h4>Promo Price Verifier</h4>
+                        <ul>
+                            <li>Slow promo error analysis</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="app-card">
+                        <h3 style="color: #27ae60;">✅ After (AI-Automated)</h3>
+                        <h4>PO Data Extractor</h4>
+                        <ul>
+                            <li>One-click bulk PDF processing</li>
+                            <li>Automated data extraction & formatting</li>
+                            <li>Consistent, accurate outputs</li>
+                        </ul>
+                        <h4>Promo Price Verifier</h4>
+                        <ul>
+                            <li>Consistent, time saving</li>
+                            <li>Instant rule-based validation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Technical Implementation -->
+        <div class="slide">
+            <h1>Technical Implementation</h1>
+            <div class="slide-content">
+                <h2>🛠️ Technology Stack</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 30px 0;">
+                    <div class="app-card">
+                        <h3>PO Data Extractor</h3>
+                        <ul>
+                            <li><strong>Frontend:</strong> React.js</li>
+                            <li><strong>AI Platform:</strong> Gemini Build</li>
+                            <li><strong>Processing:</strong> PDF parsing using Gemini APIs</li>
+                            <li><strong>Output:</strong> JSON/CSV formats</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="app-card">
+                        <h3>Promo Price Verifier</h3>
+                        <ul>
+                            <li><strong>Frontend:</strong> React.js</li>
+                            <li><strong>AI Platform:</strong> Gemini Build</li>
+                            <li><strong>Input:</strong> CSV from Promo Detector</li>
+                            <li><strong>Logic:</strong> Custom rule engine</li>
+                            <li><strong>Output:</strong> Filtered validation results</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2>🔧 Key Features Implemented</h2>
+                <ul>
+                    <li><strong>Batch Processing:</strong> Handle multiple files simultaneously</li>
+                    <li><strong>Rule Engine:</strong> Configurable business logic validation</li>
+                    <li><strong>Error Filtering:</strong> Focus on problematic data only</li>
+                    <li><strong>Export Functionality:</strong> Client-ready data formats</li>
+                    <li><strong>User-Friendly Interface:</strong> Intuitive drag-and-drop functionality</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7: Challenges & Learnings -->
+        <div class="slide">
+            <h1>Challenges & Learnings</h1>
+            <div class="slide-content">                
+                <h2>⚠️ Areas for Improvement in Promo Price Verifier</h2>
+                <ul>
+                    <li>Enhanced error handling for edge cases</li>
+                    <li>Integration with existing company systems</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 10: Anniversary Slide -->
+        <div class="slide anniversary-slide">
+            <div class="anniversary-content">
+                <h1>🎉 Celebrating Excellence</h1>
+                <div style="margin: 60px 0;">
+                    <h2 style="font-size: 3rem; color: white; border: none; margin-bottom: 30px;">Big Rattle Technologies</h2>
+                    <h3 style="font-size: 2.5rem; color: #fff3cd; margin-bottom: 40px;">13th Anniversary</h3>
+                    <p style="font-size: 1.8rem; color: white; margin-bottom: 40px;">August 14, 2025</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 40px; border-radius: 20px; margin: 40px 0;">
+                    <h3 style="color: white; margin-bottom: 20px;">🚀 13 Years of Innovation</h3>
+                    <p style="color: white; font-size: 1.3rem; line-height: 1.6;">
+                        From humble beginnings to AI-native transformation,<br>
+                        Big Rattle Technologies continues to lead with innovation,<br>
+                        creativity, and cutting-edge solutions.
+                    </p>
+                </div>
+                
+                <div style="margin-top: 60px;">
+                    <p style="font-size: 1.5rem; color: #fff3cd; font-weight: 600;">
+                        Here's to many more years of technological excellence! 🥳
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">8</span>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">← Previous</button>
+        <button class="nav-btn" onclick="nextSlide()">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+
+            if (currentSlide === totalSlides - 1) {
+                document.body.classList.add('white-bg');
+            } else {
+                document.body.classList.remove('white-bg');
+            }
+
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function previousSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
